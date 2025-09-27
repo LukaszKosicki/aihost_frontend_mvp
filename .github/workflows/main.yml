@@ -13,7 +13,7 @@ jobs:
 
     - name: Build frontend Docker image
       run: |
-        docker build -t aihost_frontend:latest .
+        docker build -f Dockerfile.frontend -t aihost_frontend:latest .
         docker tag aihost_frontend:dev ghcr.io/${{ secrets.GHCR_USERNAME }}/aihost_frontend:latest
 
     - name: Login to GHCR
