@@ -28,6 +28,7 @@ jobs:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_KEY }}
+        passphrase: ${{ secrets.SSH_PASSPHRASE }}
         script: |
           kubectl set image deployment/aihost-frontend aihost-frontend=ghcr.io/${{ secrets.GHCR_USERNAME }}/aihost_frontend:latest
           kubectl rollout status deployment/aihost-frontend
