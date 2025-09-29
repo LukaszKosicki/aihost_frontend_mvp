@@ -33,3 +33,4 @@ jobs:
           export KUBECONFIG=/home/ubuntu/.kube/config
           kubectl set image deployment/aihost-frontend aihost-frontend=ghcr.io/${{ secrets.GHCR_USERNAME }}/aihost_frontend:latest
           kubectl rollout status deployment/aihost-frontend
+          kubectl rollout restart deployment aihost-frontend
