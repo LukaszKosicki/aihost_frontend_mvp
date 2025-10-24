@@ -28,9 +28,9 @@ jobs:
         host: ${{ secrets.SSH_HOST }}
         username: ${{ secrets.SSH_USER }}
         key: ${{ secrets.SSH_KEY }}
-        passphrase: ${{ secrets.SSH_PASSPHRASE }}
         script: |
           export KUBECONFIG=/home/ubuntu/.kube/config
-          kubectl set image deployment/aihost-frontend-mvp aihost-frontend-mvp=ghcr.io/${{ secrets.GHCR_USERNAME }}/aihost_frontend_mvp:latest
-          kubectl rollout status deployment/aihost-frontend
-          kubectl rollout restart deployment aihost-frontend
+          sudo kubectl set image deployment/aihost-frontend-mvp aihost-frontend-mvp=ghcr.io/${{ secrets.GHCR_USERNAME }}/aihost_frontend_mvp:latest
+          sudo kubectl rollout status deployment/aihost-frontend
+          sudo kubectl rollout restart deployment aihost-frontend
+
