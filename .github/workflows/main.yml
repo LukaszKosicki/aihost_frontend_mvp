@@ -30,7 +30,8 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         script: |
           export KUBECONFIG=/home/ubuntu/.kube/config
-          sudo kubectl set image deployment/aihost-frontend-mvp aihost-frontend-mvp=ghcr.io/${{ secrets.GHCR_USERNAME }}/aihost_frontend_mvp:latest
-          sudo kubectl rollout status deployment/aihost-frontend
-          sudo kubectl rollout restart deployment aihost-frontend
+          sudo kubectl set image deployment/aihost-frontend aihost-frontend=ghcr.io/lukaszkosicki/aihost-frontend-mvp:latest -n aihost
+          sudo kubectl rollout status deployment/aihost-frontend -n aihost
+          sudo kubectl rollout restart deployment/aihost-frontend -n aihost
+
 
