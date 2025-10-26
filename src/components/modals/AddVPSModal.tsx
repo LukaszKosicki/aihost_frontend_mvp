@@ -7,6 +7,7 @@ import Button from "../ui/button/Button";
 import Alert from "../ui/alert/Alert";
 import { useForm, Controller } from 'react-hook-form';
 import { TableVPS, VPSDto } from "../../types/vps";
+import { useToken } from "../../hooks/useToken";
 
 type PropsType = {
   isOpen: boolean,
@@ -32,7 +33,7 @@ export default function AddVPSModal({ isOpen, closeModal, editForm = false, id =
   } = useForm<VPSDto>();
 
   // Pobranie tokena np. z localStorage
-  const token = localStorage.getItem('token');
+  const token = useToken();
 
   const onSubmit = (data: VPSDto, checking: boolean) => {
     if (!checking) {
@@ -84,6 +85,8 @@ export default function AddVPSModal({ isOpen, closeModal, editForm = false, id =
 
   const checkVPSConnection = async (data: VPSDto) => {
     setChecking(true);
+    console.log(import.meta.env.VITE_API_URL);
+    console.log(token);
     await fetch(import.meta.env.VITE_API_URL + "/vps/check-connection", {
       method: "POST",
       headers: {

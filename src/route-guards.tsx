@@ -11,3 +11,8 @@ export function PublicOnly() {
   const { loggedIn } = useAuth();
   return loggedIn ? <Navigate to="/vps" replace /> : <Outlet />;
 }
+
+export function AdminOnly() {
+  const { role } = useAuth();
+  return role.toLowerCase() === "admin" ? <Outlet /> : <Navigate to="/vps" replace />;
+}

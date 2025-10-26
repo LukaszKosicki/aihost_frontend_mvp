@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
@@ -20,10 +20,13 @@ export default function SignUpForm() {
     repeatPassword: string
   }
 
+  const [checking, setChecking] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const navigate = useNavigate();
 
   const register = async (data: FormData) => {
+    setChecking(true);
     try {
       const response = await fetch(import.meta.env.VITE_API_URL + "/auth/register", {
         method: "POST",
@@ -40,10 +43,9 @@ export default function SignUpForm() {
         throw new Error(`Błąd serwera: ${response.status}`);
       }
 
-      const result = await response.json();
-      console.log(result);
+      //  const result = await response.json();
       if (response.status === 200) {
-
+        navigate("/signup-success");
       } else {
 
       }
@@ -142,6 +144,7 @@ export default function SignUpForm() {
                         placeholder="Enter your email"
                         error={!!errors.email}
                         hint={errors.email?.message as string | undefined}
+                        disabled={checking}
                       />
                     </div>
                   )}
@@ -151,7 +154,16 @@ export default function SignUpForm() {
                   name="password"
                   control={control}
                   rules={{
-                    required: 'Field is required'
+                    required: 'Field is required',
+                    minLength: {
+                      value: 6,
+                      message: 'Password must be at least 6 characters long',
+                    },
+                    pattern: {
+                      value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).{6,}$/,
+                      message:
+                        'Password must contain at least one uppercase, one lowercase, one digit and one special character',
+                    },
                   }}
                   render={({ field }) => (
                     <div>
@@ -166,6 +178,7 @@ export default function SignUpForm() {
                           id="password"
                           error={!!errors.password}
                           hint={errors.password?.message as string | undefined}
+                          disabled={checking}
                         />
                         <span
                           onClick={() => setShowPassword(!showPassword)}
@@ -181,43 +194,44 @@ export default function SignUpForm() {
                     </div>
                   )}
                 />
-                 {/* Repeat Password */}
-              <Controller
-                name="repeatPassword"
-                control={control}
-                rules={{
-                  required: "Field is required",
-                  validate: (value) =>
-                    value === getValues("password") || "Passwords must match!",
-                }}
-                render={({ field }) => (
-                  <div>
-                    <Label>
-                      Repeat Password<span className="text-error-500">*</span>
-                    </Label>
-                    <div className="relative">
-                      <Input
-                        {...field}
-                        placeholder="Repeat password"
-                        type={showPassword ? "text" : "password"}
-                        id="repeatPassword"
-                        error={!!errors.repeatPassword}
-                        hint={errors.repeatPassword?.message}
-                      />
-                      <span
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
-                      >
-                        {showPassword ? (
-                          <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
-                        ) : (
-                          <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
-                        )}
-                      </span>
+                {/* Repeat Password */}
+                <Controller
+                  name="repeatPassword"
+                  control={control}
+                  rules={{
+                    required: "Field is required",
+                    validate: (value) =>
+                      value === getValues("password") || "Passwords must match!",
+                  }}
+                  render={({ field }) => (
+                    <div>
+                      <Label>
+                        Repeat Password<span className="text-error-500">*</span>
+                      </Label>
+                      <div className="relative">
+                        <Input
+                          {...field}
+                          placeholder="Repeat password"
+                          type={showPassword ? "text" : "password"}
+                          id="repeatPassword"
+                          error={!!errors.repeatPassword}
+                          hint={errors.repeatPassword?.message}
+                          disabled={checking}
+                        />
+                        <span
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
+                        >
+                          {showPassword ? (
+                            <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+                          ) : (
+                            <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
+                          )}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                )}
-              />
+                  )}
+                />
                 {/* <!-- Checkbox --> */}
                 <div className="flex items-center gap-3">
                   <Checkbox
@@ -239,9 +253,12 @@ export default function SignUpForm() {
                 {/* <!-- Button --> */}
                 <div>
                   <button
-                    disabled={!isChecked}
+                    disabled={checking || !isChecked}
                     type="submit" className="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
                     Sign Up
+                    {checking &&
+                      <div className="h-6 w-6 border-4 ml-3 border-t-blue-500 border-gray-300 rounded-full animate-spin"></div>
+                    }
                   </button>
                 </div>
               </div>

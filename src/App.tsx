@@ -10,7 +10,8 @@ import VPSList from "./pages/VPS/VPSList";
 import VPSDetails from "./pages/VPS/VPSDetails";
 import AIModelsList from "./pages/Admin/AIModelsList";
 import AIChat from "./pages/Chat/AIChat";
-import { PrivateRoute, PublicOnly } from "./route-guards";
+import { AdminOnly, PrivateRoute, PublicOnly } from "./route-guards";
+import SignUpSuccess from "./pages/AuthPages/SignUpSuccess";
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
             <Route path="/" element={<SignIn />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/signup-success" element={<SignUpSuccess />} />
           </Route>
 
           {/* Dashboard Layout */}
@@ -35,15 +37,16 @@ export default function App() {
               <Route path="/" element={<Home />} />
 
               {/*Profile */}
-              <Route path="/profile" element={<UserProfiles/>} />
+              <Route path="/profile" element={<UserProfiles />} />
 
               {/*AI Chat */}
               <Route path="/aichat/:id" element={<AIChat />} />
 
               {/* Admin */}
-              <Route path="/ai-models" element={<AIModelsList />} />
+              <Route element={<AdminOnly />}>
+                <Route path="/ai-models" element={<AIModelsList />} />
+              </Route>
 
-            
             </Route>
           </Route>
 

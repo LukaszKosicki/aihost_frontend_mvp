@@ -27,7 +27,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = () => {
     localStorage.removeItem("token");
     setLoggedIn(false);
-    window.location.href = "/login";
+    window.location.href = "/signin";
   };
 
   // 🔹 Sprawdzenie tokena przy starcie aplikacji
@@ -38,7 +38,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    const fetchVPS = async () => {
+    const checkAuthentication = async () => {
       try {
         const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/check`, {
           method: "GET",
@@ -49,7 +49,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (!res.ok) {
           throw new Error("Unauthorized");
         }
-
+        const data = await res.json();
+        setEmail(data.email);
+        setRole(data.role);
         setLoggedIn(true); // jeśli odpowiedź OK, token jest ważny
       } catch (error) {
         localStorage.removeItem("token");
@@ -60,7 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     };
 
-    fetchVPS(); // <-- wywołanie funkcji po jej deklaracji
+    checkAuthentication(); // <-- wywołanie funkcji po jej deklaracji
   }, []);
 
   // 🔹 Nasłuchiwanie zmian w localStorage (inne karty)
