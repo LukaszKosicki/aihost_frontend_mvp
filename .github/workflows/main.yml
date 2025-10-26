@@ -11,16 +11,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Build frontend Docker image
-      run: |
-        docker build -f Dockerfile.frontend -t aihost_frontend_mvp:latest .
-        docker tag aihost_frontend_mvp:latest ghcr.io/${{ secrets.GHCR_USERNAME }}/aihost_frontend_mvp:latest
-
     - name: Login to GHCR
       run: echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io -u ${{ secrets.GHCR_USERNAME }} --password-stdin
 
-    - name: Push frontend image
-      run: docker push ghcr.io/${{ secrets.GHCR_USERNAME }}/aihost_frontend_mvp:latest
+    - name: Build and Push frontend image
+      run: |
+        docker build -f Dockerfile.frontend -t ghcr.io/${{ secrets.GHCR_USERNAME }}/aihost_frontend_mvp:latest .
+        docker push ghcr.io/${{ secrets.GHCR_USERNAME }}/aihost_frontend_mvp:latest
 
     - name: Deploy to k3s
       uses: appleboy/ssh-action@v0.1.6
@@ -30,8 +27,5 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         script: |
           export KUBECONFIG=/home/ubuntu/.kube/config
-          sudo kubectl set image deployment/aihost-frontend aihost-frontend=ghcr.io/lukaszkosicki/aihost-frontend-mvp:latest -n aihost
+          sudo kubectl set image deployment/aihost-frontend aihost-frontend=ghcr.io/lukaszkosicki/aihost_frontend_mvp:latest -n aihost
           sudo kubectl rollout status deployment/aihost-frontend -n aihost
-          sudo kubectl rollout restart deployment/aihost-frontend -n aihost
-
-
