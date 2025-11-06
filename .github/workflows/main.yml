@@ -30,7 +30,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ./
+          context: ./                 # 👈 katalog z kodem źródłowym
+          file: ./Dockerfile.frontend
           push: true
           tags: ghcr.io/${{ secrets.GHCR_USERNAME }}/aihost_frontend_mvp:latest
 
