@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aihost-frontend
+  namespace: aihost_mvp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: aihost-frontend
+  template:
+    metadata:
+      labels:
+        app: aihost-frontend
+    spec:
+      imagePullSecrets:
+        - name: ghcr-secret
+      containers:
+        - name: aihost-frontend
+          image: ghcr.io/${GHCR_USERNAME}/aihost_frontend_mvp:latest
+          ports:
+            - containerPort: 80
