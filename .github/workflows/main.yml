@@ -41,7 +41,7 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          source: "./k8s/aihost_mvp/*.yaml"
+          source: "./k8s/*.yaml"
           target: "~/k8s/aihost_mvp/"
           strip_components: 1
 
