@@ -17,6 +17,6 @@ spec:
         - name: ghcr-secret
       containers:
         - name: aihost-frontend
-          image: ghcr.io/${GHCR_USERNAME}/aihost_frontend_mvp:latest
+          image: ghcr.io/lukaszkosicki/aihost_frontend_mvp:latest
           ports:
             - containerPort: 80
