@@ -55,7 +55,7 @@ jobs:
           script: |
             set -e
             echo "🧱 Tworzenie namespace, jeśli nie istnieje..."
-            sudo kubectl get ns aihost_mvp || sudo kubectl create ns aihost_mvp
+            sudo kubectl get ns aihost-mvp || sudo kubectl create ns aihost-mvp
 
             echo "🚀 Stosowanie manifestów..."
             sudo kubectl apply -f ~/k8s/aihost_mvp/deployment-react.yaml
@@ -65,7 +65,7 @@ jobs:
             fi
 
             echo "♻️ Restart deploymentu..."
-            sudo kubectl -n aihost_mvp rollout restart deployment aihost-frontend
-            sudo kubectl -n aihost_mvp rollout status deployment aihost-frontend
+            sudo kubectl -n aihost-mvp rollout restart deployment aihost-frontend
+            sudo kubectl -n aihost-mvp rollout status deployment aihost-frontend
 
             echo "✅ Deploy zakończony pomyślnie!"
