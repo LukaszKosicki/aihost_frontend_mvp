@@ -62,7 +62,7 @@ jobs:
             sudo kubectl apply -f ~/k8s/aihost_mvp/frontend-deployment.yaml
             sudo kubectl apply -f ~/k8s/aihost_mvp/frontend-service.yaml
             if [ -f ~/k8s/aihost_mvp/frontend-ingress.yaml ]; then
-              sudo kubectl apply -f ~/k8s/aihost_mvp/frontend-ingress-react.yaml
+              sudo kubectl apply -f ~/k8s/aihost_mvp/frontend-ingress.yaml
             fi
 
             echo "♻️ Restart deploymentu..."
