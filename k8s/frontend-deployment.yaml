@@ -19,5 +19,5 @@ spec:
         - name: aihost-frontend
           image: ghcr.io/lukaszkosicki/aihost_frontend_mvp:latest
           imagePullPolicy: Always
-	  ports:
+          ports:
             - containerPort: 80
